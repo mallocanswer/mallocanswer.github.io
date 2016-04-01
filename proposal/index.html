@@ -57,19 +57,16 @@
 
 
 
-<meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
-Quick">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://mallocanswer.github.io/2016/03/18/hello-world/index.html">
+<meta name="description" content="SummaryWe are going to implement a parallel programming framework library for C (or C++). It would mimic the semantics of spawn and sync in Cilk, where the programmer simply identifies the independent">
+<meta property="og:type" content="website">
+<meta property="og:title" content="proposal">
+<meta property="og:url" content="http://mallocanswer.github.io/proposal/index.html">
 <meta property="og:site_name" content="MALLOCANSWER'S BLOG">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
-Quick">
-<meta property="og:updated_time" content="2016-03-19T02:48:29.000Z">
+<meta property="og:description" content="SummaryWe are going to implement a parallel programming framework library for C (or C++). It would mimic the semantics of spawn and sync in Cilk, where the programmer simply identifies the independent">
+<meta property="og:updated_time" content="2016-04-01T00:33:58.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello World">
-<meta name="twitter:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
-Quick">
+<meta name="twitter:title" content="proposal">
+<meta name="twitter:description" content="SummaryWe are going to implement a parallel programming framework library for C (or C++). It would mimic the semantics of spawn and sync in Cilk, where the programmer simply identifies the independent">
 
 
 
@@ -87,7 +84,13 @@ Quick">
   };
 </script>
 
-  <title> Hello World | MALLOCANSWER'S BLOG </title>
+  <title>
+  
+
+  
+    proposal | MALLOCANSWER'S BLOG
+  
+</title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="en">
@@ -108,7 +111,7 @@ Quick">
     
   
 
-  <div class="container one-collumn sidebar-position-left page-post-detail ">
+  <div class="container one-collumn sidebar-position-left  ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -188,105 +191,12 @@ Quick">
 
   <div id="posts" class="posts-expand">
     
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
     
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                Hello World
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-03-18T22:48:29-04:00" content="2016-03-18">
-              2016-03-18
-            </time>
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/03/18/hello-world/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/03/18/hello-world/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-        </div>
-      </header>
+      <h3 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h3><p>We are going to implement a parallel programming framework library for C (or C++). It would mimic the semantics of <code>spawn</code> and <code>sync</code> in Cilk, where the programmer simply identifies the independent parallel tasks and library would take care of the scheduling and work stealing.</p>
+<h3 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h3><p>Cilk proposed an interesting parallel programming model which hide the thread execution policies from the programmers so that the programmer simply identified the parallelism and runtime will take care of implementation mappings. While it extended the syntax of C, we tend to add these features as a C library. As a result, the programmers have to follow certain disciplines and we try to make it as easy as possible.</p>
+<h3 id="Challenge"><a href="#Challenge" class="headerlink" title="Challenge"></a>Challenge</h3><h3 id="Resources"><a href="#Resources" class="headerlink" title="Resources"></a>Resources</h3><p>We will develop and test code on our own computers.</p>
+<h3 id="Goals-and-deliverables"><a href="#Goals-and-deliverables" class="headerlink" title="Goals and deliverables"></a>Goals and deliverables</h3><h4 id="Basic-goals"><a href="#Basic-goals" class="headerlink" title="Basic goals"></a>Basic goals</h4><h4 id="More-we-hope-to-achieve"><a href="#More-we-hope-to-achieve" class="headerlink" title="More we hope to achieve"></a>More we hope to achieve</h4><h3 id="Schedule"><a href="#Schedule" class="headerlink" title="Schedule"></a>Schedule</h3><h4 id="Week-1"><a href="#Week-1" class="headerlink" title="Week 1"></a>Week 1</h4><h4 id="Week-2"><a href="#Week-2" class="headerlink" title="Week 2"></a>Week 2</h4><h4 id="Week-3"><a href="#Week-3" class="headerlink" title="Week 3"></a>Week 3</h4><h4 id="Week-4"><a href="#Week-4" class="headerlink" title="Week 4"></a>Week 4</h4><h4 id="Week-5"><a href="#Week-5" class="headerlink" title="Week 5"></a>Week 5</h4>
     
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
-
-      
-    </div>
-
-    <div>
-      
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-    </footer>
-  </article>
-
-
-
-    <div class="post-spread">
-      
-    </div>
   </div>
 
 
@@ -325,17 +235,8 @@ Quick">
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            Overview
-          </li>
-        </ul>
-      
 
-      <section class="site-overview sidebar-panel ">
+      <section class="site-overview sidebar-panel  sidebar-panel-active ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.jpeg"
@@ -402,17 +303,6 @@ Quick">
 
       </section>
 
-      
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-            
-              
-            
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Quick-Start"><span class="nav-number">1.</span> <span class="nav-text">Quick Start</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Create-a-new-post"><span class="nav-number">1.1.</span> <span class="nav-text">Create a new post</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Run-server"><span class="nav-number">1.2.</span> <span class="nav-text">Run server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Generate-static-files"><span class="nav-number">1.3.</span> <span class="nav-text">Generate static files</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deploy-to-remote-sites"><span class="nav-number">1.4.</span> <span class="nav-text">Deploy to remote sites</span></a></li></ol></li></ol></div>
-            
-          </div>
-        </section>
       
 
     </div>
@@ -497,11 +387,6 @@ Quick">
   
 
   
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
-<script type="text/javascript" src="/vendors/jquery-scrollintoview/jquery.scrollintoview.min.js?v=0.5.0"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=0.5.0"></script>
-
-
 
   
 
@@ -518,9 +403,9 @@ Quick">
 
     <script type="text/javascript">
       var disqus_shortname = 'mallocanswer';
-      var disqus_identifier = '2016/03/18/hello-world/';
-      var disqus_title = 'Hello World';
-      var disqus_url = 'http://mallocanswer.github.io/2016/03/18/hello-world/';
+      var disqus_identifier = 'proposal/index.html';
+      var disqus_title = 'proposal';
+      var disqus_url = 'http://mallocanswer.github.io/proposal/index.html';
 
       function run_disqus_script(disqus_script){
         var dsq = document.createElement('script');
