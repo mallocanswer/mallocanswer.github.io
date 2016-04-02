@@ -57,16 +57,28 @@
 
 
 
-<meta name="description" content="SummaryWe are going to implement a parallel programming framework library for C (or C++). It would mimic the semantics of spawn and sync in Cilk, where the programmer simply identifies the independent">
+<meta name="description" content="Gregor
+Gregor Samsa wakes in his bed and discovers he has transformed into a giant BUG.
+Zhan Chen (zhanc1) and Lehao Sun (lehaos)
+Summary
+We are going to implement a parallel programming framework lib">
 <meta property="og:type" content="website">
-<meta property="og:title" content="proposal">
+<meta property="og:title" content="MallocAnswer's BLOG">
 <meta property="og:url" content="http://mallocanswer.github.io/proposal/index.html">
-<meta property="og:site_name" content="MALLOCANSWER'S BLOG">
-<meta property="og:description" content="SummaryWe are going to implement a parallel programming framework library for C (or C++). It would mimic the semantics of spawn and sync in Cilk, where the programmer simply identifies the independent">
-<meta property="og:updated_time" content="2016-04-01T00:33:58.000Z">
+<meta property="og:site_name" content="MallocAnswer's BLOG">
+<meta property="og:description" content="Gregor
+Gregor Samsa wakes in his bed and discovers he has transformed into a giant BUG.
+Zhan Chen (zhanc1) and Lehao Sun (lehaos)
+Summary
+We are going to implement a parallel programming framework lib">
+<meta property="og:updated_time" content="2016-04-02T01:02:52.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="proposal">
-<meta name="twitter:description" content="SummaryWe are going to implement a parallel programming framework library for C (or C++). It would mimic the semantics of spawn and sync in Cilk, where the programmer simply identifies the independent">
+<meta name="twitter:title" content="MallocAnswer's BLOG">
+<meta name="twitter:description" content="Gregor
+Gregor Samsa wakes in his bed and discovers he has transformed into a giant BUG.
+Zhan Chen (zhanc1) and Lehao Sun (lehaos)
+Summary
+We are going to implement a parallel programming framework lib">
 
 
 
@@ -88,7 +100,7 @@
   
 
   
-    proposal | MALLOCANSWER'S BLOG
+     | MallocAnswer's BLOG
   
 </title>
 </head>
@@ -121,7 +133,7 @@
   <div class="custom-logo-site-title">
     <a href="/"  class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
-      <span class="site-title">MALLOCANSWER'S BLOG</span>
+      <span class="site-title">MallocAnswer's BLOG</span>
       <span class="logo-line-after"><i></i></span>
     </a>
   </div>
@@ -192,10 +204,101 @@
   <div id="posts" class="posts-expand">
     
     
-      <h3 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h3><p>We are going to implement a parallel programming framework library for C (or C++). It would mimic the semantics of <code>spawn</code> and <code>sync</code> in Cilk, where the programmer simply identifies the independent parallel tasks and library would take care of the scheduling and work stealing.</p>
-<h3 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h3><p>Cilk proposed an interesting parallel programming model which hide the thread execution policies from the programmers so that the programmer simply identified the parallelism and runtime will take care of implementation mappings. While it extended the syntax of C, we tend to add these features as a C library. As a result, the programmers have to follow certain disciplines and we try to make it as easy as possible.</p>
-<h3 id="Challenge"><a href="#Challenge" class="headerlink" title="Challenge"></a>Challenge</h3><h3 id="Resources"><a href="#Resources" class="headerlink" title="Resources"></a>Resources</h3><p>We will develop and test code on our own computers.</p>
-<h3 id="Goals-and-deliverables"><a href="#Goals-and-deliverables" class="headerlink" title="Goals and deliverables"></a>Goals and deliverables</h3><h4 id="Basic-goals"><a href="#Basic-goals" class="headerlink" title="Basic goals"></a>Basic goals</h4><h4 id="More-we-hope-to-achieve"><a href="#More-we-hope-to-achieve" class="headerlink" title="More we hope to achieve"></a>More we hope to achieve</h4><h3 id="Schedule"><a href="#Schedule" class="headerlink" title="Schedule"></a>Schedule</h3><h4 id="Week-1"><a href="#Week-1" class="headerlink" title="Week 1"></a>Week 1</h4><h4 id="Week-2"><a href="#Week-2" class="headerlink" title="Week 2"></a>Week 2</h4><h4 id="Week-3"><a href="#Week-3" class="headerlink" title="Week 3"></a>Week 3</h4><h4 id="Week-4"><a href="#Week-4" class="headerlink" title="Week 4"></a>Week 4</h4><h4 id="Week-5"><a href="#Week-5" class="headerlink" title="Week 5"></a>Week 5</h4>
+      <h1>Gregor</h1>
+<h5><em>Gregor Samsa wakes in his bed and discovers he has transformed into a giant BUG.</em></h5>
+<p><a href="https://github.com/Zhancc" target="_blank" rel="external">Zhan Chen</a> (zhanc1) and <a href="https://github.com/mallocanswer" target="_blank" rel="external">Lehao Sun</a> (lehaos)</p>
+<h2>Summary</h2>
+<p>We are going to implement a parallel programming framework library for C (or C++). It would mimic the semantics of <code>spawn</code> and <code>sync</code> in Cilk, where the programmer simply identifies the independent parallel tasks and library would take care of the scheduling and work stealing.</p>
+<h2>Background</h2>
+<p>Cilk proposed an interesting parallel programming model which hide the thread execution policies from the programmers so that the programmer simply identified the parallelism and runtime will take care of implementation mappings<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>. Its most prominent feature, work stealing scheduler<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>, was proved to enjoy some nice spatial and time properties. While it extended the syntax of C, we tend to add these features as a C(++) library. As a result, however, the programmers have to follow certain disciplines. We try to provide those syntactic and semantics sugars, like work stealing sheduling and performance guarantees in our library and make things as easy as possible.</p>
+<h2>Challenge</h2>
+<p><strong>Continuation</strong><sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup>: In order to distribute the jobs among workers, we have to abstract them in a managable way and be able to handle them under stack disciplines.</p>
+<p><strong>Thread Tree</strong><sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup>: As in Cilk, each threaded procedure is implicitly synced just before return, which means we need to maintain a global thread “tree” data structure that potentially can be accessed by all the workers simultaneously, where each node represents a thread and each edge corresponds either a <code>spawn</code> site or a <code>sync</code> site. The manipulation of the tree must be scalable to achieve good performance.</p>
+<p><strong>Thread Scheduling and Work Stealing</strong>: With multiple continuations in hands, which threads should be picked to work on them and how should stealing be implemented in a way that can scale across many cores. Perhaps with the extra information about the characteristic of the job, we hope to come up with a more reasonable/workload aware sheduling.</p>
+<h2>Resources</h2>
+<p>We will start the project from scratch. The implementation will be tested on multi-core computers in different scale (personal computer, ghc cluster, latedays and hopefully an equipment with more cores).</p>
+<h2>Goals and deliverables</h2>
+<h4>Basic goals</h4>
+<p>Our goal is to implement a parallel programming framework which supports <code>spawn</code> and <code>sync</code> semantics and work-stealing scheduler. The first implementation will use pthread library on Linux.</p>
+<p>To be specific, the <code>spawn</code> should create a new task to schedule, who can take arguments and whose return value can be stored to a designated location asynchrously and be used later, just like an assignment in Cilk with <code>spawn</code> on the right hand side and a variable on the left hand side. The worker pool based architecture would enforce workload distribution by work stealing scheduling<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup>.</p>
+<p><code>sync</code> will not resume until all the descendant tasks are completed. Before return from a spawned function, there will be an implicit <code>sync</code> just as in Cilk.</p>
+<p>We will test our implement on different applications on computers with different number of cores.</p>
+<h4>More we hope to achieve</h4>
+<p>If we have time, we will get rid of pthead library and implement our own version of thread abstraction. We try to implement more lightweight solution.</p>
+<p>If everything goes well, we will introduce more advanced features into our thread library, such as <code>inlet</code> and <code>abort</code>.</p>
+<h2>Benchmarks</h2>
+<p>We will evaluate our framework by rewriting several applications originally in Cilk. Those applications are carefully selected from Cilk paper benchmarks in order to test the performance under different scenarios with the state-of-art implementation.<br>
+The applications are described below (the orginal implementation is from <sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup>):</p>
+<ul>
+<li><code>fib(n)</code> Calculate the nth Fibonacci number</li>
+<li><code>heat(n)</code> Heat-diffusion calculation on an m􏰾 x n mesh</li>
+<li><code>knapsack(n)</code> Solve the 0-1 knapsack problem on n items</li>
+<li><code>lu(n)</code> LU-decomposition (without pivoting) of a dense n x n matrix</li>
+<li><code>magic(n)</code> Computes the number of n x n magic squares</li>
+<li><code>matmul(n)</code> Rectangular matrix multiplication</li>
+<li><code>plu(n)</code> Parallel LU Decomposition with Partial Pivoting</li>
+</ul>
+<h2>Schedule</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Time</th>
+<th style="text-align:left">Plan</th>
+<th style="text-align:center">Check</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">April 1-April 3</td>
+<td style="text-align:left">Literature review on work stealing and Cilk</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">April 4-April 10</td>
+<td style="text-align:left">A prototype library that allows spawning no-argument tasks and sync tasks</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">April 11-April 17</td>
+<td style="text-align:left">A prototype with <code>spawn</code>, <code>sync</code> semantics similar in Cilk and able to set return value asynchronously + first benchmark test</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">April 18-April 24</td>
+<td style="text-align:left">An implementation of work stealing protocol in a potentially non-scalable way + second benchmark test</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">April 25-May 1</td>
+<td style="text-align:left">Scale work stealing based on second benchmark test</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">May 2-May 9</td>
+<td style="text-align:left">Toward a self-implementated thread and lock</td>
+<td style="text-align:center"></td>
+</tr>
+</tbody>
+</table>
+<h2>Reference</h2>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>Blumofe, Robert D., et al. “Cilk: An efficient multithreaded runtime system.” Journal of parallel and distributed computing 37.1 (1996): 55-69. <a href="#fnref1" class="footnote-backref">↩</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>Blumofe, Robert D., and Charles E. Leiserson. “Scheduling multithreaded computations by work stealing.” Journal of the ACM (JACM) 46.5 (1999): 720-748. <a href="#fnref2" class="footnote-backref">↩</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>Frigo, Matteo, Charles E. Leiserson, and Keith H. Randall. “The implementation of the Cilk-5 multithreaded language.” ACM Sigplan Notices. Vol. 33. No. 5. ACM, 1998. <a href="#fnref3" class="footnote-backref">↩</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>Joerg, Christopher F. The cilk system for parallel multithreaded computing. Diss. Massachusetts Institute of Technology, 1996. <a href="#fnref4" class="footnote-backref">↩</a></p>
+</li>
+<li id="fn5" class="footnote-item"><p>Blumofe, Robert D. Executing multithreaded programs efficiently. Diss. Massachusetts Institute of Technology, 1995. <a href="#fnref5" class="footnote-backref">↩</a></p>
+</li>
+<li id="fn6" class="footnote-item"><p>Kielmann, T., R. Nieuwpoort, and H. Bal. “Cilk-5.3 Reference Manual.” Supercomputing Technologies Group (2000). <a href="#fnref6" class="footnote-backref">↩</a></p>
+</li>
+</ol>
+</section>
+
     
   </div>
 
@@ -266,7 +369,7 @@
               <span class="links-of-author-item">
                 <a href="https://github.com/mallocanswer" target="_blank">
                   
-                    <i class="fa fa-globe"></i>
+                    <i class="fa fa-github"></i>
                   
                   Github
                 </a>
@@ -275,7 +378,7 @@
               <span class="links-of-author-item">
                 <a href="https://www.linkedin.com/in/lhsun" target="_blank">
                   
-                    <i class="fa fa-globe"></i>
+                    <i class="fa fa-linkedin"></i>
                   
                   Linkedin
                 </a>
@@ -284,7 +387,7 @@
               <span class="links-of-author-item">
                 <a href="https://www.facebook.com/lehao.sun" target="_blank">
                   
-                    <i class="fa fa-globe"></i>
+                    <i class="fa fa-facebook"></i>
                   
                   Facebook
                 </a>
@@ -404,7 +507,7 @@
     <script type="text/javascript">
       var disqus_shortname = 'mallocanswer';
       var disqus_identifier = 'proposal/index.html';
-      var disqus_title = 'proposal';
+      var disqus_title = '';
       var disqus_url = 'http://mallocanswer.github.io/proposal/index.html';
 
       function run_disqus_script(disqus_script){
