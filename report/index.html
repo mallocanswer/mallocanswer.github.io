@@ -57,25 +57,22 @@
 
 
 
-<meta name="description" content="Report
+<meta name="description" content="Final Report
 Summary
-Goals &amp;amp; Deliverables Revisited
-We are delight to see that our development was going well as planned. Here is what we did in the past month and what we plan to do for the parallelism">
+Gregor is a worker-pool based multithreaded programming framework in C. It provides simple-to-use semantics of spawn and sync in Cilk, where the programmer simply identifies the i">
 <meta property="og:type" content="website">
 <meta property="og:title" content="report">
 <meta property="og:url" content="http://mallocanswer.github.io/report/index.html">
 <meta property="og:site_name" content="MallocAnswer's BLOG">
-<meta property="og:description" content="Report
+<meta property="og:description" content="Final Report
 Summary
-Goals &amp;amp; Deliverables Revisited
-We are delight to see that our development was going well as planned. Here is what we did in the past month and what we plan to do for the parallelism">
-<meta property="og:updated_time" content="2016-05-07T06:29:49.000Z">
+Gregor is a worker-pool based multithreaded programming framework in C. It provides simple-to-use semantics of spawn and sync in Cilk, where the programmer simply identifies the i">
+<meta property="og:updated_time" content="2016-05-07T16:00:36.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="report">
-<meta name="twitter:description" content="Report
+<meta name="twitter:description" content="Final Report
 Summary
-Goals &amp;amp; Deliverables Revisited
-We are delight to see that our development was going well as planned. Here is what we did in the past month and what we plan to do for the parallelism">
+Gregor is a worker-pool based multithreaded programming framework in C. It provides simple-to-use semantics of spawn and sync in Cilk, where the programmer simply identifies the i">
 
 
 
@@ -211,24 +208,71 @@ We are delight to see that our development was going well as planned. Here is wh
   <div id="posts" class="posts-expand">
     
     
-      <h1>Report</h1>
+      <h1>Final Report</h1>
 <h2>Summary</h2>
-<h2>Goals &amp; Deliverables Revisited</h2>
-<p>We are delight to see that our development was going well as planned. Here is what we did in the past month and what we plan to do for the parallelism competition.</p>
-<h3>Implement Thread Library</h3>
-<p>We want to deliver a thread library with support of spawn and sync semantics and work-stealing scheduler and we are well on our way to doing this. At this moment, we have implemented basic spawn and sync semantics and tested the correctness of our implementation using fib().<br>
-Specifically, with current implementation, the user can spawn any a thread with arbitrary interface and with a return object of  primitive types; the library will set the return value to the desired location asynchronously; the spawned work is enqueued to a global queue and shared by all workers.<br>
-With sync, the calling thread will be suspended just as desired and resume only after the descendents have complete; just as Cilk, any function implicitly makes a sync call before return.<br>
-The workers can be scheduled to do any available work at the point of spawn and sync.<br>
-The next stage is to develop work-stealing scheduler and continue to reduce the overhead of thread management.</p>
-<h3>Plan at Parallelism Competition</h3>
-<p>At the parallelism competition, we are planned to show the functionality and scalability of our framework. First, we may use small animations to explain how to create and steal works and also run example code to show how to use the library. Moreover, we will show our implmentation on different machines with different number of cores. Last but not least, we will compare our implementation with a naive implementation of worker-pool library without work stealing.</p>
+<p><strong>Gregor</strong> is a <strong>worker-pool</strong> based multithreaded programming framework in C. It provides <strong>simple-to-use</strong> semantics of <code>spawn</code> and <code>sync</code> in Cilk, where the programmer simply identifies the independent parallel tasks and library would take care of the <strong>scheduling</strong> and <strong>work stealing</strong>.</p>
+<h2>Background</h2>
+<p>Cilk proposed an interesting parallel programming model which hide the thread execution policies from the programmers so that the programmer simply identified the parallelism and runtime will take care of implementation mappings<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>. Its most prominent feature, work stealing scheduler<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>, was proved to enjoy some nice spatial and time properties. While it extended the syntax of C, we tend to add these features as a C library. As a result, however, the programmers have to follow certain disciplines. We try to provide those syntactic and semantics sugars, like work stealing sheduling and performance guarantees in our library and make things as easy as possible.</p>
 <h2>Challenge</h2>
-<p><strong>Continuation</strong>[^Frigo]: In order to distribute the jobs among workers, we have to abstract them in a managable way and be able to handle them under stack disciplines.</p>
-<p><strong>Thread Tree</strong>[^Joerg]: As in Cilk, each threaded procedure is implicitly synced just before return, which means we need to maintain a global thread “tree” data structure that potentially can be accessed by all the workers simultaneously, where each node represents a thread and each edge corresponds either a <code>spawn</code> site or a <code>sync</code> site. The manipulation of the tree must be scalable to achieve good performance.</p>
+<p><strong>Continuation</strong><sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup>: In order to distribute the jobs among workers, we have to abstract them in a managable way and be able to handle them under stack disciplines.</p>
+<p><strong>Thread Tree</strong><sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup>: As in Cilk, each threaded procedure is implicitly synced just before return, which means we need to maintain a global thread “tree” data structure that potentially can be accessed by all the workers simultaneously, where each node represents a thread and each edge corresponds either a <code>spawn</code> site or a <code>sync</code> site. The manipulation of the tree must be scalable to achieve good performance.</p>
 <p><strong>Thread Scheduling and Work Stealing</strong>: With multiple continuations in hands, which threads should be picked to work on them and how should stealing be implemented in a way that can scale across many cores. Perhaps with the extra information about the characteristic of the job, we hope to come up with a more reasonable/workload aware sheduling.</p>
-<h2>Resources</h2>
-<p>We will start the project from scratch. The implementation will be tested on multi-core computers in different scale (personal computer, ghc cluster, latedays and hopefully an equipment with more cores).</p>
+<h2>Approach</h2>
+<h3>Basic Design</h3>
+<p>(This part will be elaborated in final report)<br>
+Our current design mimic a small non-preemptive OS kernel in user level library where on each spawn, the library will take care of all the arguments passing, return point setting and return value to create a new job instance and ensure the library can put its hand on critical point; on each sync point, the library will deschedule the job and look for the new job either from its private deque or steal from others.</p>
+<h3>Speed-up Tricks</h3>
+<p>Our implementation also uses a couple of neat tricks to really improve performance:</p>
+<ol>
+<li>Memory Management (buffer).</li>
+<li>Work Stealing with giant lock.</li>
+<li>TH protocol &amp; reduce context saving overhead.</li>
+<li>Cache Alignment.</li>
+<li>O3 optimization.</li>
+</ol>
+<p>We will briefly present some motivations behind each optimization and illustrate their effects on an example program <code>fib</code> in next section</p>
+<h2>Code example</h2>
+<p>??? code to be filled in</p>
+<p>The fib will recursively spawn two children and then sync for their return. There is little computation and memory access work for each job other than spawn and sync, thus the program is simple enough to provide a good insight into the overhead of our Gregor runtime and demonstrate the effects of optimizations we have made.</p>
+<p>Its execution time relative to development time curve is shown below based on settings specified in next section. Each turning point represents an optimization trick we use during our development and those optimizations are not specialized to this benchmark, but as shown in next section, quite general.</p>
+<p>??? figure to be filled in</p>
+<ol>
+<li>
+<p>The initial implementation would mmap a stack page for each job and unmmap it when the job finishes. We find that the mmap syscall incurred non-trivial overhead due to both kernel trap and page searching. Thus we add a memory manager layer to buffering all the freed pages on each worker. This reduces the run time of fib(29) from 23.199s to 3.576s(). Note that even fib(30)(which would double the run time of fib(29)) would cause mmap to fail then.</p>
+</li>
+<li>
+<p>We next replace single global job queue with private job deques for each worker and implement the work stealing algorithm describe in Cilk paper. Access to the private job deque need acquire a deque lock. This reduce the run time of fib(30) to 0.359s.</p>
+</li>
+<li>
+<p>We get rid of the giant lock on each deque and implement a variant TH protocol decribed in Cilk paper with atomic operations. We notice that the state-of-art Cilk implementations(MIT version and GCC version) do not fully implement this feature, and they still use giant lock for each deque pulling. Besides, we notice that the calling convention of GCC on IA32 can save us a lot work of context saving. Our current version only saves a very small number of registers and thus reduces the memory access frequency. These two optimizations reduce the run time to 0.252s.</p>
+</li>
+<li>
+<p>We notice that one data structure governing the state of a worker is allocated contiguously in memory and the worker only accesses their own copy. This indicates that the cache line might overlap for two copies. We annotate that data structure to align with 128-byte boundary and this reduces the time to 0.071s</p>
+</li>
+<li>
+<p>Finally, we enable O3 optimization and let gcc deal with the rest. This reduce time to 0.052.</p>
+</li>
+</ol>
+<h2>Results</h2>
+<h3>Settings</h3>
+<p>We tested our implementation on latedays machine with two, six-core Xeon e5-2620 v3 processors. Here are the parameters of the processors: 2.4 GHz, 15MB L3 cache, hyper-threading, AVX2 instruction support, and 16 GB RAM Memory.</p>
+<h3>Performance on Different Applications</h3>
+<p>We evaluate our framework by rewriting several applications originally in Cilk. Those applications and their test input are carefully selected from Cilk paper benchmarks in order to test the performance under different scenarios with the state-of-art implementation.<br>
+The applications are described below (the orginal implementation is from <sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup>):</p>
+<ol>
+<li><code>fib(n)</code> Calculate the nth Fibonacci number. The default number of $n$ is 30.</li>
+<li><code>lu(n)</code> LU-decomposition (without pivoting) of a dense n x n matrix. The default number of $n$ is 1024.</li>
+<li><code>matmul(n)</code> Rectangular matrix multiplication. The default number of $n$ is 1000.</li>
+<li><code>plu(n)</code> Parallel LU Decomposition with Partial Pivoting. The default number of $n$ is 1024.</li>
+</ol>
+<p>Note that the cilk version is running in 64-bit mode with more registers, wider word length and cheaper calling convention, etc. Our code runs in 32-bit mode.</p>
+<p>[此处有图]</p>
+<p>The chart shows our implementation has comparable performance with cilk. Interestingly, when we reduce the parallelism of <code>lu</code> application, the performance of cilk decreases aggresively (even slower than serial version). In other applications, the performance of our implementation is within 10% of cilk’s performance.</p>
+<h3>Performance on Different Number of Cores</h3>
+<p>In order to test the scalability of our implementation, we run <code>lu</code> application multiple times with different number of cores.</p>
+<p>[此处有图, Gregor]<br>
+The chart shows the performance of our implementation improves with the increasing number of cores we use. As we can see, the speedup is almost linear in the number of<br>
+cores.</p>
 <h2>Schedule</h2>
 <table>
 <thead>
@@ -266,11 +310,27 @@ The next stage is to develop work-stealing scheduler and continue to reduce the 
 </tr>
 <tr>
 <td style="text-align:center">May 2-May 9</td>
-<td style="text-align:left">Toward a self-implementated thread and lock</td>
+<td style="text-align:left">Analyze the bottleneck and improve the performance</td>
 <td style="text-align:center"></td>
 </tr>
 </tbody>
 </table>
+<h2>Reference</h2>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>Blumofe, Robert D., et al. “Cilk: An efficient multithreaded runtime system.” Journal of parallel and distributed computing 37.1 (1996): 55-69. <a href="#fnref1" class="footnote-backref">↩</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>Blumofe, Robert D., and Charles E. Leiserson. “Scheduling multithreaded computations by work stealing.” Journal of the ACM (JACM) 46.5 (1999): 720-748. <a href="#fnref2" class="footnote-backref">↩</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>Frigo, Matteo, Charles E. Leiserson, and Keith H. Randall. “The implementation of the Cilk-5 multithreaded language.” ACM Sigplan Notices. Vol. 33. No. 5. ACM, 1998. <a href="#fnref3" class="footnote-backref">↩</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>Joerg, Christopher F. The cilk system for parallel multithreaded computing. Diss. Massachusetts Institute of Technology, 1996. <a href="#fnref4" class="footnote-backref">↩</a></p>
+</li>
+<li id="fn5" class="footnote-item"><p>Kielmann, T., R. Nieuwpoort, and H. Bal. “Cilk-5.3 Reference Manual.” Supercomputing Technologies Group (2000). <a href="#fnref5" class="footnote-backref">↩</a></p>
+</li>
+</ol>
+</section>
 
     
   </div>
