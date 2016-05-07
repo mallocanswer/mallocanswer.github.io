@@ -70,7 +70,7 @@ Gregor is a worker-pool based multithreaded programming framework in C. It provi
 <meta property="og:image" content="http://mallocanswer.github.io/3.png">
 <meta property="og:image" content="http://mallocanswer.github.io/1.png">
 <meta property="og:image" content="http://mallocanswer.github.io/4.png">
-<meta property="og:updated_time" content="2016-05-07T17:03:07.000Z">
+<meta property="og:updated_time" content="2016-05-07T17:06:15.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="report">
 <meta name="twitter:description" content="Final Report
@@ -273,7 +273,7 @@ The applications are described below (the orginal implementation is from <sup cl
 </ol>
 <p>Note that the cilk version is running in 64-bit mode with more registers, wider word length and cheaper calling convention, etc. Our code runs in 32-bit mode.</p>
 <p><img src="1.png" alt="Different Applications"></p>
-<p>The chart shows our implementation has comparable performance with cilk. Interestingly, when we reduce the parallelism of <code>lu</code> application, the performance of cilk decreases aggresively (even slower than serial version). In other applications, the performance of our implementation is within 10% of cilk’s performance.</p>
+<p>The chart shows our implementation has comparable performance with cilk. Interestingly, for<code>lu</code> when span of the algorithm decreases, the performance of cilk decreases aggresively (even slower than serial version) which indicates the non-trivial overhead of cilk scheduler. In other applications, the performance of our implementation is within 10% to 200% of cilk’s performance.</p>
 <h3>Performance on Different Number of Cores</h3>
 <p>In order to test the scalability of our implementation, we run <code>lu</code> application multiple times with different number of cores.</p>
 <p><img src="4.png" alt="Different Number of cores"><br>
