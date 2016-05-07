@@ -70,7 +70,7 @@ Gregor is a worker-pool based multithreaded programming framework in C. It provi
 <meta property="og:image" content="http://mallocanswer.github.io/3.png">
 <meta property="og:image" content="http://mallocanswer.github.io/1.png">
 <meta property="og:image" content="http://mallocanswer.github.io/2.png">
-<meta property="og:updated_time" content="2016-05-07T16:18:57.000Z">
+<meta property="og:updated_time" content="2016-05-07T16:53:18.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="report">
 <meta name="twitter:description" content="Final Report
@@ -215,6 +215,8 @@ Gregor is a worker-pool based multithreaded programming framework in C. It provi
       <h1>Final Report</h1>
 <h2>Summary</h2>
 <p><strong>Gregor</strong> is a <strong>worker-pool</strong> based multithreaded programming framework in C. It provides <strong>simple-to-use</strong> semantics of <code>spawn</code> and <code>sync</code> in Cilk, where the programmer simply identifies the independent parallel tasks and library would take care of the <strong>scheduling</strong> and <strong>work stealing</strong>.</p>
+<h2>Plan at Parallelism Competition</h2>
+<p>At the parallelism competition, we are planned to show the functionality and scalability of our framework. First, we may use small animations to explain how to create and steal works and also run example code to show how to use the library. Moreover, we will show our implmentation on different machines with different number of cores. Last but not least, we will compare our implementation with cilk.</p>
 <h2>Background</h2>
 <p>Cilk proposed an interesting parallel programming model which hide the thread execution policies from the programmers so that the programmer simply identified the parallelism and runtime will take care of implementation mappings<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>. Its most prominent feature, work stealing scheduler<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>, was proved to enjoy some nice spatial and time properties. While it extended the syntax of C, we tend to add these features as a C library. As a result, however, the programmers have to follow certain disciplines. We try to provide those syntactic and semantics sugars, like work stealing sheduling and performance guarantees in our library and make things as easy as possible.</p>
 <h2>Challenge</h2>
