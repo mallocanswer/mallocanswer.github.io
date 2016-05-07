@@ -67,12 +67,16 @@ Gregor is a worker-pool based multithreaded programming framework in C. It provi
 <meta property="og:description" content="Final Report
 Summary
 Gregor is a worker-pool based multithreaded programming framework in C. It provides simple-to-use semantics of spawn and sync in Cilk, where the programmer simply identifies the i">
-<meta property="og:updated_time" content="2016-05-07T16:01:44.000Z">
+<meta property="og:image" content="http://mallocanswer.github.io/3.png">
+<meta property="og:image" content="http://mallocanswer.github.io/1.png">
+<meta property="og:image" content="http://mallocanswer.github.io/2.png">
+<meta property="og:updated_time" content="2016-05-07T16:17:37.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="report">
 <meta name="twitter:description" content="Final Report
 Summary
 Gregor is a worker-pool based multithreaded programming framework in C. It provides simple-to-use semantics of spawn and sync in Cilk, where the programmer simply identifies the i">
+<meta name="twitter:image" content="http://mallocanswer.github.io/3.png">
 
 
 
@@ -232,10 +236,10 @@ Our current design mimic a small non-preemptive OS kernel in user level library 
 </ol>
 <p>We will briefly present some motivations behind each optimization and illustrate their effects on an example program <code>fib</code> in next section</p>
 <h2>Code example</h2>
-<p>??? code to be filled in</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">int fib(int n) &#123;</span><br><span class="line">    if (n &lt; 2)</span><br><span class="line">        return (n);</span><br><span class="line">    else &#123;</span><br><span class="line">        int x, y;</span><br><span class="line">        spawn(INT, &amp;x, fib, 1, INT, n - 1);</span><br><span class="line">        spawn(INT, &amp;y, fib, 1, INT, n - 2);</span><br><span class="line"></span><br><span class="line">        __gregor_sync();</span><br><span class="line">        return (x + y);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int g_main(int argc, char *argv[]) &#123;</span><br><span class="line">    int n, result;</span><br><span class="line"></span><br><span class="line">    if (argc != 2) &#123;</span><br><span class="line">        fprintf(stderr, &quot;Usage: fib [&lt;cilk options&gt;] &lt;n&gt;\n&quot;);</span><br><span class="line">        exit(1);</span><br><span class="line">    &#125;</span><br><span class="line">    n = atoi(argv[1]);</span><br><span class="line">    spawn(INT, &amp;result, fib, 1, INT, n);</span><br><span class="line">    __gregor_sync();</span><br><span class="line"></span><br><span class="line">    printf(&quot;Result: %d\n&quot;, result);</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main(int argc, char *argv[]) &#123;</span><br><span class="line">    struct timespec start, finish;</span><br><span class="line">    double elapsed;</span><br><span class="line"></span><br><span class="line">    clock_gettime(CLOCK_MONOTONIC, &amp;start);</span><br><span class="line">    gregor_main(NULL, g_main, argc, argv);</span><br><span class="line">    clock_gettime(CLOCK_MONOTONIC, &amp;finish);</span><br><span class="line">    elapsed = (finish.tv_sec - start.tv_sec);</span><br><span class="line">    elapsed += (finish.tv_nsec - start.tv_nsec) / 1000000000.0;</span><br><span class="line">    printf(&quot;Total time taken by CPU: %.3f\n&quot;, elapsed);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>The fib will recursively spawn two children and then sync for their return. There is little computation and memory access work for each job other than spawn and sync, thus the program is simple enough to provide a good insight into the overhead of our Gregor runtime and demonstrate the effects of optimizations we have made.</p>
 <p>Its execution time relative to development time curve is shown below based on settings specified in next section. Each turning point represents an optimization trick we use during our development and those optimizations are not specialized to this benchmark, but as shown in next section, quite general.</p>
-<p>??? figure to be filled in</p>
+<p><img src="3.png" alt="Performance Improvement"></p>
 <ol>
 <li>
 <p>The initial implementation would mmap a stack page for each job and unmmap it when the job finishes. We find that the mmap syscall incurred non-trivial overhead due to both kernel trap and page searching. Thus we add a memory manager layer to buffering all the freed pages on each worker. This reduces the run time of fib(29) from 23.199s to 3.576s(). Note that even fib(30)(which would double the run time of fib(29)) would cause mmap to fail then.</p>
@@ -260,17 +264,17 @@ Our current design mimic a small non-preemptive OS kernel in user level library 
 <p>We evaluate our framework by rewriting several applications originally in Cilk. Those applications and their test input are carefully selected from Cilk paper benchmarks in order to test the performance under different scenarios with the state-of-art implementation.<br>
 The applications are described below (the orginal implementation is from <sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup>):</p>
 <ol>
-<li><code>fib(n)</code> Calculate the nth Fibonacci number. The default number of $n$ is 30.</li>
-<li><code>lu(n)</code> LU-decomposition (without pivoting) of a dense n x n matrix. The default number of $n$ is 1024.</li>
-<li><code>matmul(n)</code> Rectangular matrix multiplication. The default number of $n$ is 1000.</li>
-<li><code>plu(n)</code> Parallel LU Decomposition with Partial Pivoting. The default number of $$n$$ is 1025.</li>
+<li><code>fib(n)</code> Calculate the nth Fibonacci number. The default number of n is 30.</li>
+<li><code>lu(n)</code> LU-decomposition (without pivoting) of a dense n x n matrix. The default number of n is 1024.</li>
+<li><code>matmul(n)</code> Rectangular matrix multiplication. The default number of n is 1000.</li>
+<li><code>plu(n)</code> Parallel LU Decomposition with Partial Pivoting. The default number of n is 1025.</li>
 </ol>
 <p>Note that the cilk version is running in 64-bit mode with more registers, wider word length and cheaper calling convention, etc. Our code runs in 32-bit mode.</p>
-<p>[此处有图]</p>
+<p><img src="1.png" alt="Different Applications"></p>
 <p>The chart shows our implementation has comparable performance with cilk. Interestingly, when we reduce the parallelism of <code>lu</code> application, the performance of cilk decreases aggresively (even slower than serial version). In other applications, the performance of our implementation is within 10% of cilk’s performance.</p>
 <h3>Performance on Different Number of Cores</h3>
 <p>In order to test the scalability of our implementation, we run <code>lu</code> application multiple times with different number of cores.</p>
-<p>[此处有图, Gregor]<br>
+<p><img src="2.png" alt="Different Number of cores"><br>
 The chart shows the performance of our implementation improves with the increasing number of cores we use. As we can see, the speedup is almost linear in the number of<br>
 cores.</p>
 <h2>Schedule</h2>
