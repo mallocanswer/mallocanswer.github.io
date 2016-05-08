@@ -69,8 +69,9 @@ Summary
 Gregor is a worker-pool based multithreaded programming framework in C. It provides simple-to-use semantics of spawn and sync in Cilk, where the programmer simply identifies the i">
 <meta property="og:image" content="http://mallocanswer.github.io/3.png">
 <meta property="og:image" content="http://mallocanswer.github.io/1.png">
+<meta property="og:image" content="http://mallocanswer.github.io/4.png">
 <meta property="og:image" content="http://mallocanswer.github.io/5.png">
-<meta property="og:updated_time" content="2016-05-08T19:43:43.000Z">
+<meta property="og:updated_time" content="2016-05-08T19:47:36.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="report">
 <meta name="twitter:description" content="Final Report
@@ -276,9 +277,11 @@ The applications are described below (the orginal implementation is from <sup cl
 <p><img src="1.png" alt="Different Applications"></p>
 <p>The chart shows our implementation has comparable performance with cilk. Interestingly, for<code>lu</code> when span of the algorithm decreases, the performance of cilk decreases aggresively (even slower than serial version) which indicates the non-trivial overhead of cilk scheduler. In other applications, the performance of our implementation is within 10% to 100% of cilk’s performance.</p>
 <h3>Performance on Different Number of Cores</h3>
-<p>In order to test the scalability of our implementation, we run <code>lu</code> application multiple times with different number of cores.</p>
-<p><img src="5.png" alt="Different Number of cores"><br>
-The chart shows the performance of our implementation improves with the increasing number of cores we use.</p>
+<p>In order to test the scalability of our implementation, we run <code>lu</code> application multiple times with different number of cores.<br>
+<img src="4.png" alt="Different Number of cores"><br>
+We also run <code>Quicksort</code> multiple times with different number of cores.<br>
+<img src="5.png" alt="Different Number of cores"><br>
+The charts show the performance of our implementation improves with the increasing number of cores we use.</p>
 <h2>Schedule</h2>
 <table>
 <thead>
