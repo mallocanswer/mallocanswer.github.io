@@ -71,7 +71,7 @@ Gregor is a worker-pool based multithreaded programming framework in C. It provi
 <meta property="og:image" content="http://mallocanswer.github.io/1.png">
 <meta property="og:image" content="http://mallocanswer.github.io/4.png">
 <meta property="og:image" content="http://mallocanswer.github.io/5.png">
-<meta property="og:updated_time" content="2016-05-08T21:41:58.000Z">
+<meta property="og:updated_time" content="2016-05-08T21:43:04.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="report">
 <meta name="twitter:description" content="Final Report
@@ -267,11 +267,11 @@ Our current design mimic a small non-preemptive OS kernel in user level library 
 <p>We evaluate our framework by rewriting several applications originally in Cilk. Those applications and their test input are carefully selected from Cilk paper benchmarks in order to test the performance under different scenarios with the state-of-art implementation.<br>
 The applications are described below (the orginal implementation is from <sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup>):</p>
 <ol>
-<li><code>fib(n)</code> Calculate the nth Fibonacci number. The default number of n is 30.</li>
-<li><code>lu(n)</code> LU-decomposition (without pivoting) of a dense n x n matrix. The default number of n is 1024.</li>
-<li><code>matmul(n)</code> Rectangular matrix multiplication. The default number of n is 1000.</li>
-<li><code>plu(n)</code> Parallel LU Decomposition with Partial Pivoting. The default number of n is 1025.</li>
-<li><code>quicksort(n)</code> Sort an out-of-order array in O(nlogn). The default number of $n$ is 10240000.</li>
+<li><code>fib(n)</code> Calculate the nth Fibonacci number. The default number of $n$ is 30.</li>
+<li><code>lu(n)</code> LU-decomposition (without pivoting) of a dense n x n matrix. The default number of $n$ is 1024.</li>
+<li><code>matmul(n)</code> Rectangular matrix multiplication. The default number of $n$ is 1000.</li>
+<li><code>plu(n)</code> Parallel LU Decomposition with Partial Pivoting. The default number of $n$ is 1025.</li>
+<li><code>quicksort(n)</code> Sort an out-of-order array in $O(nlogn)$. The default number of $n$ is 10240000.</li>
 </ol>
 <p>Note that the cilk version is running in 64-bit mode with more registers, wider word length and cheaper calling convention, etc. Our code runs in 32-bit mode.</p>
 <p><img src="1.png" alt="Different Applications"></p>
