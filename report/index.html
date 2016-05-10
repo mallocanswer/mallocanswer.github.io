@@ -71,7 +71,7 @@ Gregor is a worker-pool based multithreaded programming framework in C. It provi
 <meta property="og:image" content="http://mallocanswer.github.io/1.png">
 <meta property="og:image" content="http://mallocanswer.github.io/4.png">
 <meta property="og:image" content="http://mallocanswer.github.io/5.png">
-<meta property="og:updated_time" content="2016-05-08T21:43:04.000Z">
+<meta property="og:updated_time" content="2016-05-10T02:42:44.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="report">
 <meta name="twitter:description" content="Final Report
@@ -226,8 +226,7 @@ Gregor is a worker-pool based multithreaded programming framework in C. It provi
 <p><strong>Thread Scheduling and Work Stealing</strong>: With multiple continuations in hands, which threads should be picked to work on them and how should stealing be implemented in a way that can scale across many cores. Perhaps with the extra information about the characteristic of the job, we hope to come up with a more reasonable/workload aware sheduling.</p>
 <h2>Approach</h2>
 <h3>Basic Design</h3>
-<p>(This part will be elaborated in final report)<br>
-Our current design mimic a small non-preemptive OS kernel in user level library where on each spawn, the library will take care of all the arguments passing, return point setting and return value to create a new job instance and ensure the library can put its hand on critical point; on each sync point, the library will deschedule the job and look for the new job either from its private deque or steal from others.</p>
+<p>Our current design mimic a small non-preemptive OS kernel in user level library where on each spawn, the library will take care of all the arguments passing, return point setting and return value to create a new job instance and ensure the library can put its hand on critical point; on each sync point, the library will deschedule the job and look for the new job either from its private deque or steal from others.</p>
 <h3>Speed-up Tricks</h3>
 <p>Our implementation also uses a couple of neat tricks to really improve performance:</p>
 <ol>
